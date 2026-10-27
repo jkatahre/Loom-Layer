@@ -1,0 +1,220 @@
+@import 'tailwindcss';
+
+/* ── Design tokens ───────────────────────────────────────────────────────────
+   Brand colours are overridden at startup from `store.identity.colors`
+   (see src/app/applyTheme.ts), so a rebrand never needs to touch this file. */
+@theme {
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-canvas: #ffffff;
+  --color-surface: #faf7f3;
+  --color-sand: #f1ece5;
+  --color-line: #ebe5dd;
+  --color-ink: #1f1a16;
+  --color-muted: #6e655e;
+  --color-brand: #76513d;
+  --color-brand-dark: #503627;
+  --color-brand-soft: #f3eae2;
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #128c7e;
+  --color-festive: #7a1020;
+  --color-festive-gold: #f2b233;
+  --color-sale: #b3261e;
+  --color-star: #e0a100;
+
+  --shadow-soft: 0 1px 2px rgb(31 26 22 / 0.04), 0 10px 30px -18px rgb(31 26 22 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(31 26 22 / 0.05), 0 22px 44px -22px rgb(31 26 22 / 0.28);
+  --ease-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-fade-in: fade-in 0.5s var(--ease-soft) both;
+  --animate-slide-up: slide-up 0.35s var(--ease-soft) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+}
+
+@layer base {
+  html {
+    color: var(--color-ink);
+    background: var(--color-canvas);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-brand-dark);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button, [role='button'], summary, label[for] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ── Layout & component utilities ─────────────────────────────────────────── */
+@utility container-page {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) { padding-inline: 1.5rem; }
+  @media (width >= 64rem) { padding-inline: 2rem; }
+  @media (width >= 80rem) { padding-inline: 2.5rem; }
+}
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.625rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: background-color 0.2s var(--ease-soft), color 0.2s var(--ease-soft), border-color 0.2s var(--ease-soft),
+    box-shadow 0.2s var(--ease-soft), transform 0.2s var(--ease-soft);
+  &:active:not(:disabled) { transform: translateY(1px); }
+  &:disabled { opacity: 0.5; }
+}
+@utility btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+  &:hover:not(:disabled) { background: var(--color-brand-dark); }
+}
+@utility btn-dark {
+  background: var(--color-ink);
+  color: #fff;
+  &:hover:not(:disabled) { background: #000; }
+}
+@utility btn-outline {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  border-color: color-mix(in oklab, var(--color-ink) 18%, transparent);
+  &:hover:not(:disabled) { border-color: var(--color-ink); }
+}
+@utility btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  &:hover:not(:disabled) { background: var(--color-sand); }
+}
+@utility btn-whatsapp {
+  background: var(--color-whatsapp-dark);
+  color: #fff;
+  &:hover:not(:disabled) { background: #0e7266; }
+}
+@utility btn-sm {
+  min-height: 36px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand);
+}
+
+@utility field {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-canvas);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  &::placeholder { color: color-mix(in oklab, var(--color-muted) 70%, transparent); }
+  &:focus { outline: none; border-color: var(--color-brand); box-shadow: 0 0 0 3px var(--color-brand-soft); }
+  &[aria-invalid='true'] { border-color: var(--color-sale); }
+}
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 36px;
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: var(--color-canvas);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: border-color 0.15s, background-color 0.15s;
+  &:hover { border-color: color-mix(in oklab, var(--color-ink) 35%, transparent); }
+  &[aria-pressed='true'], &[aria-checked='true'] {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: #fff;
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-sand) 0%, var(--color-surface) 50%, var(--color-sand) 100%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  border-radius: 0.5rem;
+}
