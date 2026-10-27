@@ -2,6 +2,7 @@
   "name": "loom-and-layer",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Loom & Layer — premium curtains & window styling website template",
   "workspaces": [
     "frontend",

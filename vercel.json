@@ -3,7 +3,10 @@
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/((?!images/|assets/|favicon).*)", "destination": "/index.html" }],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/((?!api/|images/|assets/|favicon).*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/images/(.*)",
