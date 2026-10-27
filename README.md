@@ -91,7 +91,7 @@ Other scripts (run from the repository root):
 
 | Script | Purpose |
 | --- | --- |
-| `npm run build` | Typecheck and build to `frontend/dist` |
+| `npm run build` | Typecheck and build to `dist` |
 | `npm run preview` | Serve the production build |
 | `npm test` | Run the unit tests (units, pricing, discounts, coupons, quote inputs, filters, data integrity, image paths) |
 | `npm run typecheck` | TypeScript only |
@@ -250,7 +250,7 @@ Import the repository into Vercel. `vercel.json` already sets:
 
 - install: `npm install`
 - build: `npm run build`
-- output directory: `frontend/dist`
+- output directory: `dist`
 - an SPA rewrite to `index.html`, so deep links such as `/products/...` or `/catalog?category=…` work on refresh
 - caching headers for `/images/*`
 

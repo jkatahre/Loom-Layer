@@ -8,6 +8,9 @@ export default defineConfig({
   server: { port: 5173, open: false },
   build: {
     target: 'es2022',
+    // Output at the repo root so Vercel finds `dist` regardless of project settings.
+    outDir: '../dist',
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         manualChunks: {
