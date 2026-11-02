@@ -8,8 +8,9 @@ export function PriceTag({ view, size = 'md', showEmi = false, className }: { vi
   }
   return (
     <div className={className}>
-      {view.prefix && <p className={cn('text-muted', size === 'lg' ? 'text-sm' : 'text-xs')}>{view.prefix}</p>}
-      <p className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+      {view.prefix && size !== 'sm' && <p className={cn('text-muted', size === 'lg' ? 'text-sm' : 'text-xs')}>{view.prefix}</p>}
+      <p className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+        {view.prefix && size === 'sm' && <span className="text-xs text-muted">From</span>}
         <span className={cn('font-semibold tabular-nums text-ink', size === 'lg' ? 'font-display text-3xl font-medium' : size === 'md' ? 'text-base' : 'text-sm')}>
           {view.amount}
         </span>

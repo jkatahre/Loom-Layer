@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { Link, useSearchParams } from 'react-router';
+import { useMemo, useState, type ReactNode } from 'react';
+import { useSearchParams } from 'react-router';
 import { ProductCard } from '../components/ProductCard';
 import { Dialog } from '../components/ui/Dialog';
 import { Icon } from '../components/ui/Icon';
@@ -73,9 +73,6 @@ export function CatalogPage() {
   const { data, error, loading, reload } = useAsync(getProducts, []);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [draft, setDraft] = useState<CatalogState>(state);
-  const [qInput, setQInput] = useState(state.q);
-
-  useEffect(() => setQInput(state.q), [state.q]);
 
   const facets = useMemo(() => buildFacets(data ?? []), [data]);
   const results = useMemo(() => (data ? applyCatalog(data, state, sizeIdsByProduct) : []), [data, state]);
@@ -100,38 +97,18 @@ export function CatalogPage() {
   };
 
   return (
-    <div className="container-page pt-8 pb-10">
-      <nav aria-label="Breadcrumb" className="text-xs text-muted">
-        <Link to="/" className="hover:text-ink">Home</Link> <span aria-hidden="true">/</span> <span className="text-ink">Curtains</span>
-      </nav>
-      <header className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h1 className="text-[2.25rem] sm:text-[2.75rem]">{heading}</h1>
-          <p className="mt-1 max-w-2xl text-sm text-muted">
-            {singleCategory?.description ?? 'Every price shows its selling unit — normally one pair (two panels).'}
-          </p>
-        </div>
-        <form
-          role="search"
-          className="relative w-full md:w-80"
-          onSubmit={(e) => {
-            e.preventDefault();
-            commit({ ...state, q: qInput.trim() });
-          }}
-        >
-          <label htmlFor="catalog-q" className="sr-only">Search the catalogue</label>
-          <Icon name="search" size={18} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" />
-          <input id="catalog-q" type="search" className="field rounded-full pl-10" placeholder="Name, fabric, colour, SKU…" value={qInput} onChange={(e) => setQInput(e.target.value)} onBlur={() => qInput.trim() !== state.q && commit({ ...state, q: qInput.trim() })} />
-        </form>
-      </header>
-
-      <div className="sticky top-16 z-20 -mx-4 mt-6 flex items-center justify-between gap-3 border-y border-line bg-canvas/95 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:border-x-0 lg:bg-transparent lg:px-0">
-        <button type="button" className="btn btn-outline btn-sm lg:hidden" onClick={openDrawer}>
-          <Icon name="filter" size={16} /> Filters{count ? ` (${count})` : ''}
-        </button>
-        <p className="hidden text-sm text-muted lg:block" aria-live="polite">
+    <div className="px-3 pt-2 sm:px-4 lg:px-8">
+      <header className="flex flex-wrap items-baseline gap-x-3">
+        <h1 className="text-2xl sm:text-[1.75rem]">{heading}</h1>
+        <p className="text-sm text-muted" aria-live="polite">
           {loading ? 'Loading…' : `${results.length} ${results.length === 1 ? 'design' : 'designs'}`}
         </p>
+      </header>
+
+      <div className="sticky top-16 z-20 -mx-3 mb-2 flex items-center justify-between gap-3 bg-canvas/95 px-3 py-1.5 backdrop-blur sm:-mx-4 sm:px-4 lg:-mx-8 lg:px-8">
+        <button type="button" className="btn btn-outline btn-sm" onClick={openDrawer}>
+          <Icon name="filter" size={16} /> Filters{count ? ` (${count})` : ''}
+        </button>
         <label className="flex items-center gap-2 text-sm">
           <span className="text-muted max-sm:sr-only">Sort by</span>
           <select className="field min-h-9 w-auto rounded-full py-1.5 pr-8 text-sm" value={state.sort} onChange={(e) => commit({ ...state, sort: e.target.value as SortKey })}>
@@ -141,7 +118,7 @@ export function CatalogPage() {
       </div>
 
       {(chips.length > 0 || state.q) && (
-        <div className="mt-4 flex flex-wrap items-center gap-2" aria-label="Active filters">
+        <div className="mb-3 flex flex-wrap items-center gap-2" aria-label="Active filters">
           {state.q && (
             <button type="button" className="chip" onClick={() => commit({ ...state, q: '' })} aria-label={`Remove search ${state.q}`}>
               “{state.q}” <Icon name="close" size={14} />
@@ -156,40 +133,30 @@ export function CatalogPage() {
         </div>
       )}
 
-      <div className="mt-6 grid gap-10 lg:grid-cols-[250px_1fr]">
-        {/* Sticky below the header with its own scroll, so only the product grid moves with the page. */}
-        <aside
-          aria-label="Filters"
-          className="hidden lg:sticky lg:top-24 lg:block lg:max-h-[calc(100dvh-7.5rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pr-3 [scrollbar-width:thin]"
-        >
-          {data && <FilterPanel facets={facets} state={state} products={data} onToggle={(k, v) => commit(toggle(state, k, v))} />}
-        </aside>
-
-        <section aria-label="Products" className="lg:min-h-[calc(100dvh-7.5rem)]">
-          <p className="mb-4 text-sm text-muted lg:hidden" aria-live="polite">{loading ? 'Loading…' : `${results.length} designs`}</p>
-          {error ? (
-            <ErrorState error={error} onRetry={reload} />
-          ) : loading ? (
-            <GridSkeleton count={9} className="md:grid-cols-3 lg:grid-cols-3" />
-          ) : results.length === 0 ? (
-            <EmptyState
-              title="No curtains match these filters"
-              body="Try removing a filter, or ask us — most designs can be made to measure in other fabrics."
-              action={<button type="button" className="btn btn-primary" onClick={() => commit(clearAll(state))}>Clear all filters</button>}
-            />
-          ) : (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3">
-              {results.map((p, i) => <ProductCard key={p.id} product={p} priority={i < 3} />)}
-            </div>
-          )}
-        </section>
-      </div>
+      <section aria-label="Products">
+        {error ? (
+          <ErrorState error={error} onRetry={reload} />
+        ) : loading ? (
+          <GridSkeleton count={12} />
+        ) : results.length === 0 ? (
+          <EmptyState
+            title="No curtains match these filters"
+            body="Try removing a filter, or ask us — most designs can be made to measure in other fabrics."
+            action={<button type="button" className="btn btn-primary" onClick={() => commit(clearAll(state))}>Clear all filters</button>}
+          />
+        ) : (
+          <div className="grid grid-cols-2 gap-x-2 gap-y-6 sm:gap-x-3 md:grid-cols-3 lg:gap-x-4 lg:gap-y-9 2xl:grid-cols-4">
+            {results.map((p, i) => <ProductCard key={p.id} product={p} priority={i < 4} />)}
+          </div>
+        )}
+      </section>
 
       <Dialog
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         title="Filters"
         variant="sheet"
+        side="left"
         footer={
           <div className="grid grid-cols-2 gap-2">
             <button type="button" className="btn btn-outline" onClick={() => setDraft(clearAll(draft))}>Reset</button>

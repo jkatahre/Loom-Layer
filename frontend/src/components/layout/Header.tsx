@@ -94,7 +94,7 @@ export function Header() {
 
   return (
     <header ref={headerRef} className={cn('sticky top-0 z-40 border-b bg-canvas/95 backdrop-blur transition-shadow', compact || megaOpen || searchOpen ? 'border-line shadow-soft' : 'border-transparent')}>
-      <div className={cn('container-page grid grid-cols-[1fr_auto_1fr] items-center transition-[height] duration-300', compact ? 'h-16' : 'h-16 lg:h-20')}>
+      <div className="container-page grid h-16 grid-cols-[1fr_auto_1fr] items-center">
         {/* Left: navigation */}
         <div className="flex items-center">
           <button type="button" className="btn btn-ghost -ml-2 size-11 rounded-full p-0 lg:hidden" onClick={() => setMenuOpen(true)} aria-label="Open menu">
@@ -174,7 +174,7 @@ export function Header() {
               </div>
             ))}
             <Link to="/custom-curtains" className="group relative overflow-hidden rounded-2xl">
-              <SmartImage src={store.home.customSection.examples[0]?.src} alt="" ratio="4 / 5" className="h-full" imgClassName="transition-transform duration-700 group-hover:scale-105" />
+              <SmartImage src={store.home.customSection.examples[0]?.src} alt="" ratio="1" className="h-full" imgClassName="transition-transform duration-700 group-hover:scale-105" />
               <span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
               <span className="absolute inset-x-0 bottom-0 p-5 text-canvas">
                 <span className="eyebrow text-festive-gold">Made to measure</span>

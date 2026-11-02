@@ -67,7 +67,7 @@ export function ProductPage() {
 function ProductSkeleton() {
   return (
     <div className="container-page grid gap-10 py-8 lg:grid-cols-2" role="status" aria-label="Loading product">
-      <div className="skeleton aspect-[4/5] rounded-2xl" />
+      <div className="skeleton aspect-square rounded-xl" />
       <div className="space-y-4">
         <div className="skeleton h-4 w-1/3" />
         <div className="skeleton h-10 w-3/4" />
@@ -141,7 +141,7 @@ function ProductView({ detail }: { detail: ProductDetail }) {
 
   return (
     <>
-      <nav aria-label="Breadcrumb" className="container-page pt-5 text-xs text-muted">
+      <nav aria-label="Breadcrumb" className="container-page pt-3 text-xs text-muted">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li><Link to="/" className="hover:text-ink">Home</Link></li>
           <li aria-hidden="true">/</li>
@@ -157,7 +157,7 @@ function ProductView({ detail }: { detail: ProductDetail }) {
         </ol>
       </nav>
 
-      <div className="container-page grid gap-8 pt-5 pb-16 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+      <div className="container-page grid gap-5 pt-3 pb-8 lg:grid-cols-[1.1fr_1fr] lg:gap-8">
         <Gallery images={gallery} key={variant.id} />
 
         <div className="min-w-0">
@@ -173,7 +173,7 @@ function ProductView({ detail }: { detail: ProductDetail }) {
             {product.in_showroom && <span className="inline-flex items-center gap-1"><Icon name="pin" size={14} /> On display in showroom</span>}
           </div>
 
-          <div className="mt-6 rounded-2xl bg-surface p-5">
+          <div className="mt-3 rounded-xl bg-surface p-4">
             <PriceTag view={view} size="lg" showEmi />
             <p className="mt-2 text-xs text-muted">
               {view.amount ? `Price for one ${unitWord}${product.selling_unit === 'pair' ? ' (two panels)' : ''}${mode === 'standard' && selected ? `, ${selected.size.label.split(' · ')[1] ?? ''} per panel` : ''}. ` : ''}
@@ -323,17 +323,19 @@ function ProductView({ detail }: { detail: ProductDetail }) {
             />
           )}
 
-          <p className="mt-6 text-sm text-muted">{product.description}</p>
         </div>
       </div>
 
       {/* Specifications & policies */}
-      <section aria-labelledby="spec-title" className="bg-surface py-14">
-        <div className="container-page grid gap-10 lg:grid-cols-2">
+      <section aria-labelledby="spec-title" className="bg-surface py-6">
+        <div className="container-page grid gap-6 lg:grid-cols-2">
           <div>
-            <h2 id="spec-title" className="text-2xl">Specifications</h2>
-            <dl className="mt-5 divide-y divide-line rounded-2xl bg-canvas text-sm">
-              {[
+            <h2 id="spec-title" className="text-xl">Product details</h2>
+            <div className="mt-3 divide-y divide-line rounded-xl bg-canvas">
+              <Policy title="Description">{product.description}</Policy>
+              <Policy title="Specifications">
+                <dl>
+                  {[
                 ['Material', MATERIAL_LABELS[variant.material]],
                 ['Colour', `${variant.name}`],
                 ['Pattern', listLabels(product.patterns, PATTERN_LABELS)],
@@ -349,18 +351,20 @@ function ProductView({ detail }: { detail: ProductDetail }) {
                 ['Rooms', product.rooms.map((r) => ROOM_LABELS[r]).join(', ')],
                 ['Categories', categories.map((c) => c.name).join(', ')],
                 ['Warranty', product.warranty],
-              ].map(([k, v]) => (
-                <div key={k} className="grid grid-cols-[8rem_1fr] gap-3 px-4 py-3">
-                  <dt className="text-muted">{k}</dt>
-                  <dd>{v}</dd>
-                </div>
-              ))}
-            </dl>
+                  ].map(([k, v]) => (
+                    <div key={k} className="grid grid-cols-[8rem_1fr] gap-3 py-1.5">
+                      <dt>{k}</dt>
+                      <dd className="text-ink">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </Policy>
+            </div>
           </div>
           <div>
-            <h2 className="text-2xl">Delivery, care &amp; service</h2>
-            <div className="mt-5 divide-y divide-line rounded-2xl bg-canvas">
-              <Policy title="Lead time" open>
+            <h2 className="text-xl">Delivery, care &amp; service</h2>
+            <div className="mt-3 divide-y divide-line rounded-xl bg-canvas">
+              <Policy title="Lead time">
                 Ready-made: {product.lead_time.ready_made_days.join('–')} working days. Made to measure: {product.lead_time.custom_days.join('–')} working days after confirmation.
               </Policy>
               <Policy title="Delivery">
@@ -387,23 +391,23 @@ function ProductView({ detail }: { detail: ProductDetail }) {
         </div>
       </section>
 
-      <section id="reviews" aria-labelledby="rev-title" className="container-page py-14">
-        <SectionHeading id="rev-title" eyebrow="Reviews" title={product.rating ? `${product.rating.average} out of 5 · ${product.rating.count} reviews` : 'Reviews'} intro="Demonstration reviews included with the template." />
+      <section id="reviews" aria-labelledby="rev-title" className="container-page py-6">
+        <SectionHeading id="rev-title" title={product.rating ? `${product.rating.average} out of 5 · ${product.rating.count} reviews` : 'Reviews'} />
         {reviews.error ? (
           <ErrorState error={reviews.error} onRetry={reviews.reload} />
         ) : reviews.loading ? (
           <div className="skeleton h-32 rounded-2xl" />
         ) : reviews.data?.length ? (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-3 md:grid-cols-2">
             {reviews.data.map((r) => (
-              <article key={r.id} className="rounded-2xl border border-line p-5">
+              <article key={r.id} className="rounded-xl border border-line p-4">
                 <div className="flex items-center justify-between">
                   <StarRating value={r.rating} />
                   {r.is_demo && <span className="rounded bg-sand px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-muted uppercase">Demo review</span>}
                 </div>
-                <h3 className="mt-3 text-lg">{r.title}</h3>
-                <p className="mt-1 text-sm text-muted">{r.body}</p>
-                <p className="mt-3 text-xs text-muted">{r.author} · {r.city} · {new Date(r.date).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}</p>
+                <h3 className="mt-2 text-lg">{r.title}</h3>
+                <p className="mt-1 line-clamp-2 text-sm text-muted">{r.body}</p>
+                <p className="mt-2 text-xs text-muted">{r.author} · {r.city} · {new Date(r.date).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}</p>
               </article>
             ))}
           </div>
@@ -413,8 +417,8 @@ function ProductView({ detail }: { detail: ProductDetail }) {
       </section>
 
       {related.data && related.data.length > 0 && (
-        <section aria-labelledby="rel-title" className="container-page pb-6">
-          <SectionHeading id="rel-title" eyebrow="You may also like" title="Related curtains" />
+        <section aria-labelledby="rel-title" className="container-page pb-2">
+          <SectionHeading id="rel-title" title="You may also like" />
           <Rail label="Related curtains">
             {related.data.map((p) => (
               <RailItem key={p.id}><ProductCard product={p} /></RailItem>
@@ -433,7 +437,7 @@ function Gallery({ images }: { images: ProductImage[] }) {
   return (
     <div className="lg:sticky lg:top-24 lg:self-start">
       <div
-        className="relative overflow-hidden rounded-2xl"
+        className="relative overflow-hidden rounded-xl"
         tabIndex={0}
         aria-roledescription="image gallery"
         aria-label={`Image ${index + 1} of ${images.length}: ${current?.alt ?? ''}`}
@@ -442,7 +446,7 @@ function Gallery({ images }: { images: ProductImage[] }) {
           if (e.key === 'ArrowLeft') go(-1);
         }}
       >
-        <SmartImage key={current?.id} src={current?.url} alt={current?.alt ?? ''} position={current?.position} ratio="4 / 5" priority className="animate-fade-in" />
+        <SmartImage key={current?.id} src={current?.url} alt={current?.alt ?? ''} position={current?.position} ratio="1" priority className="animate-fade-in" />
         {images.length > 1 && (
           <>
             <button type="button" onClick={() => go(-1)} className="absolute top-1/2 left-3 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-canvas/85 shadow-soft backdrop-blur hover:bg-canvas" aria-label="Previous image"><Icon name="chevronLeft" /></button>
@@ -450,7 +454,7 @@ function Gallery({ images }: { images: ProductImage[] }) {
           </>
         )}
       </div>
-      <div className="mt-3 grid grid-cols-5 gap-2">
+      <div className="mt-2 grid grid-cols-5 gap-2">
         {images.map((img, i) => (
           <button key={img.id} type="button" onClick={() => setIndex(i)} aria-label={`Show image ${i + 1}: ${img.alt}`} aria-current={i === index} className={cn('overflow-hidden rounded-lg ring-offset-2', i === index ? 'ring-2 ring-ink' : 'opacity-75 hover:opacity-100')}>
             <SmartImage src={img.url} alt="" ratio="1" position={img.position} />
@@ -519,9 +523,9 @@ function ActionButtons({
   );
 }
 
-function Policy({ title, children, open }: { title: string; children: ReactNode; open?: boolean }) {
+function Policy({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <details className="group px-4" open={open}>
+    <details className="group px-4">
       <summary className="flex min-h-12 items-center justify-between text-sm font-semibold">
         {title}
         <Icon name="chevronDown" size={16} className="transition-transform group-open:rotate-180" />

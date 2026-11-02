@@ -47,17 +47,16 @@ export function ErrorState({ error, onRetry, className }: { error: Error | null;
 export function ProductCardSkeleton() {
   return (
     <div aria-hidden="true">
-      <div className="skeleton aspect-[4/5] w-full rounded-2xl" />
-      <div className="skeleton mt-4 h-3 w-1/3" />
-      <div className="skeleton mt-2 h-4 w-3/4" />
-      <div className="skeleton mt-3 h-4 w-1/2" />
+      <div className="skeleton aspect-square w-full rounded-xl" />
+      <div className="skeleton mt-3 h-4 w-3/4" />
+      <div className="skeleton mt-2 h-4 w-1/2" />
     </div>
   );
 }
 
 export function GridSkeleton({ count = 8, className }: { count?: number; className?: string }) {
   return (
-    <div className={cn('grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4', className)} role="status" aria-label="Loading products">
+    <div className={cn('grid grid-cols-2 gap-x-2 gap-y-6 sm:gap-x-3 md:grid-cols-3 lg:gap-x-4 lg:gap-y-9 2xl:grid-cols-4', className)} role="status" aria-label="Loading products">
       {Array.from({ length: count }, (_, i) => (
         <ProductCardSkeleton key={i} />
       ))}

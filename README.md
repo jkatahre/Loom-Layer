@@ -222,7 +222,7 @@ All images are `.webp` files under `frontend/public/images/`.
 
 **About the bundled images:** they are stylised renders produced by `npm run images`: fabric textures, folded curtain panels and simple room scenes. They are placeholders for real photography.
 
-**Replacing an image:** save your photo with the same file name. No code changes are needed.
+**Replacing an image:** save your photo with the same file name. No code changes are needed. Use square 1080 × 1080 photos everywhere except `banners/`, which are wide (about 21:9). The site shows every other image as a square, so other shapes get cropped.
 
 | Path | Used for |
 | --- | --- |

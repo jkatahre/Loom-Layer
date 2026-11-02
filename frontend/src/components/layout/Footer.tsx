@@ -11,13 +11,12 @@ const FOOTER_CATEGORIES = ['sheer-curtains', 'blackout-curtains', 'linen-curtain
 export function Footer() {
   const { showroom, contact, identity } = store;
   return (
-    <footer className="mt-24 bg-ink text-canvas/80">
-      <div className="container-page grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1.2fr_1fr]">
+    <footer className="mt-8 bg-ink text-canvas/80">
+      <div className="container-page grid gap-8 py-8 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1.2fr_1fr]">
         <div>
           <Logo inverted />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-canvas/65">{identity.tagline}</p>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-canvas/65">{store.about.intro}</p>
-          <ul className="mt-6 flex gap-2" aria-label="Social media">
+          <ul className="mt-4 flex flex-wrap gap-2" aria-label="Social media">
             {store.social.map((s) => (
               <li key={s.label}>
                 <a href={s.href} target="_blank" rel="noopener noreferrer" className="chip border-canvas/20 bg-transparent text-canvas/80 hover:border-canvas/60">
@@ -98,7 +97,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-canvas/10">
-        <div className="container-page flex flex-col gap-2 py-6 text-xs text-canvas/50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page flex flex-col gap-1 py-3 text-xs text-canvas/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {identity.name}. All rights reserved.
           </p>

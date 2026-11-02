@@ -4,7 +4,6 @@ import { cn } from '../../utils/cn';
 import { Icon } from './Icon';
 
 export function SectionHeading({
-  eyebrow,
   title,
   intro,
   link,
@@ -12,7 +11,6 @@ export function SectionHeading({
   className,
   id,
 }: {
-  eyebrow?: string;
   title: ReactNode;
   intro?: ReactNode;
   link?: { to: string; label: string };
@@ -21,13 +19,12 @@ export function SectionHeading({
   id?: string;
 }) {
   return (
-    <div className={cn('mb-8 flex flex-col gap-4 md:mb-10', align === 'center' ? 'items-center text-center' : 'md:flex-row md:items-end md:justify-between', className)}>
+    <div className={cn('mb-4 flex gap-3', align === 'center' ? 'flex-col items-center text-center' : 'items-center justify-between', className)}>
       <div className={cn('max-w-2xl', align === 'center' && 'mx-auto')}>
-        {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
-        <h2 id={id} className="text-[1.875rem] sm:text-[2.25rem]">
+        <h2 id={id} className="text-[1.375rem] sm:text-2xl">
           {title}
         </h2>
-        {intro && <p className="mt-3 text-muted">{intro}</p>}
+        {intro && <p className="mt-1 text-sm text-muted">{intro}</p>}
       </div>
       {link && (
         <Link to={link.to} className="group inline-flex min-h-11 shrink-0 items-center gap-2 text-sm font-semibold text-ink hover:text-brand">
@@ -39,14 +36,14 @@ export function SectionHeading({
   );
 }
 
-/** Horizontal scroller on mobile, grid on desktop. */
+/** Product grid: nothing is hidden behind a sideways scroll. */
 export function Rail({ children, className, label }: { children: ReactNode; className?: string; label: string }) {
   return (
     <div
       role="list"
       aria-label={label}
       className={cn(
-        'scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0',
+        'grid grid-cols-2 gap-x-2 gap-y-6 sm:gap-x-3 md:grid-cols-4 lg:gap-x-4 lg:gap-y-9',
         className,
       )}
     >
@@ -57,7 +54,7 @@ export function Rail({ children, className, label }: { children: ReactNode; clas
 
 export function RailItem({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div role="listitem" className={cn('w-[68%] shrink-0 snap-start sm:w-[42%] lg:w-auto', className)}>
+    <div role="listitem" className={className}>
       {children}
     </div>
   );

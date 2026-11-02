@@ -13,14 +13,12 @@ export function ContactPage() {
   const { showroom, contact, delivery, policies, contactPage } = store;
   return (
     <>
-      <section className="container-page pt-10 pb-14">
-        <p className="eyebrow mb-4">Showroom &amp; contact</p>
-        <h1 className="text-[2.5rem] sm:text-[3.25rem]">Visit, call or WhatsApp us</h1>
-        <p className="mt-3 max-w-2xl text-muted">{contactPage.intro}</p>
+      <section className="container-page pt-3 pb-6">
+        <h1 className="text-2xl sm:text-[1.75rem]">Visit, call or WhatsApp us</h1>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
-          <div className="space-y-6">
-            <div className="rounded-2xl border border-line p-6">
+        <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_1.1fr]">
+          <div className="space-y-4">
+            <div className="rounded-xl border border-line p-4">
               <h2 className="text-xl">{showroom.name}</h2>
               <address className="mt-2 text-sm text-muted not-italic">
                 {showroom.addressLines.map((l) => <span key={l} className="block">{l}</span>)}
@@ -35,31 +33,27 @@ export function ContactPage() {
               </div>
             </div>
             <ShowroomMap />
-            <ul className="grid grid-cols-2 gap-2 text-sm">
-              {showroom.highlights.map((h) => <li key={h} className="flex gap-2 rounded-xl bg-surface p-3"><Icon name="check" size={16} className="mt-0.5 shrink-0 text-brand" />{h}</li>)}
-            </ul>
           </div>
-          <div className="rounded-2xl bg-surface p-6 sm:p-8">
-            <h2 className="text-2xl">Send an enquiry</h2>
-            <p className="mt-1 mb-6 text-sm text-muted">We reply on WhatsApp during opening hours.</p>
+          <div className="rounded-xl bg-surface p-4 sm:p-5">
+            <h2 className="mb-3 text-xl">Send an enquiry</h2>
             <EnquiryForm request={{ kind: 'general', link: typeof window !== 'undefined' ? window.location.href : undefined }} allowKindChange />
           </div>
         </div>
       </section>
 
-      <section className="bg-surface py-14">
-        <div className="container-page grid gap-10 lg:grid-cols-2">
+      <section className="bg-surface py-6">
+        <div className="container-page grid gap-6 lg:grid-cols-2">
           <div id="delivery" className="scroll-mt-28">
-            <h2 className="text-[2rem]">Delivery charges</h2>
-            <table className="mt-5 w-full text-sm">
+            <h2 className="text-xl">Delivery charges</h2>
+            <table className="mt-2 w-full text-sm">
               <caption className="sr-only">Delivery areas, fees and times</caption>
               <thead><tr className="border-b border-line text-left text-xs text-muted"><th className="py-2 font-medium">Area</th><th className="py-2 font-medium">Fee</th><th className="py-2 font-medium">Estimated time</th></tr></thead>
               <tbody>
                 {delivery.areas.map((a) => (
                   <tr key={a.name} className="border-b border-line">
-                    <td className="py-3 pr-3">{a.name}</td>
-                    <td className="py-3 pr-3 font-semibold">{a.fee === 0 ? 'Free delivery' : formatINR(a.fee)}</td>
-                    <td className="py-3 text-muted">{a.eta}</td>
+                    <td className="py-2 pr-3">{a.name}</td>
+                    <td className="py-2 pr-3 font-semibold">{a.fee === 0 ? 'Free delivery' : formatINR(a.fee)}</td>
+                    <td className="py-2 text-muted">{a.eta}</td>
                   </tr>
                 ))}
               </tbody>
@@ -67,10 +61,10 @@ export function ContactPage() {
             <p className="mt-3 text-sm text-muted">{delivery.note}</p>
           </div>
           <div>
-            <h2 className="text-[2rem]">Measurement &amp; installation</h2>
-            <div className="mt-5 space-y-4 text-sm">
+            <h2 className="text-xl">Measurement &amp; installation</h2>
+            <div className="mt-2 space-y-2 text-sm">
               {[policies.measurement, policies.installation, policies.fabricSamples].map((p) => (
-                <div key={p.title} className="rounded-2xl bg-canvas p-5">
+                <div key={p.title} className="rounded-xl bg-canvas p-3">
                   <h3 className="font-sans font-semibold">{p.title}</h3>
                   <p className="mt-1 text-muted">{p.body}</p>
                 </div>
@@ -80,11 +74,11 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section id="faq" aria-labelledby="faq-title" className="container-page scroll-mt-28 py-14">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
+      <section id="faq" aria-labelledby="faq-title" className="container-page scroll-mt-28 py-6">
+        <div className="grid gap-4 lg:grid-cols-[1fr_1.6fr] lg:gap-8">
           <div>
-            <h2 id="faq-title" className="text-[2rem]">Frequently asked questions</h2>
-            <SmartImage src={showroom.photos[2]?.src} alt={showroom.photos[2]?.alt ?? ''} ratio="4 / 3" className="mt-6 hidden rounded-2xl lg:block" />
+            <h2 id="faq-title" className="text-xl">Frequently asked questions</h2>
+            <SmartImage src={showroom.photos[2]?.src} alt={showroom.photos[2]?.alt ?? ''} ratio="1" className="mt-3 hidden rounded-xl lg:block" />
           </div>
           <div className="divide-y divide-line border-y border-line">
             {contactPage.faqs.map((f) => (
