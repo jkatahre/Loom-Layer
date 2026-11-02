@@ -12,7 +12,7 @@ import { ErrorState } from '../ui/States';
 
 export function WhyChooseUs() {
   return (
-    <section aria-label={`Why ${store.identity.name}`} className="page-wide pt-3">
+    <section aria-label={`Why ${store.identity.name}`} className="page-wide pt-3 max-md:hidden">
       <ul className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-xl bg-surface p-4 lg:grid-cols-4">
         {store.home.trustBadges.map((b) => (
           <li key={b.title} className="flex items-center gap-2.5 text-sm font-semibold">

@@ -7,10 +7,10 @@ import { isFestivalLive } from '../../utils/promotions';
 import { Icon } from '../ui/Icon';
 import { SmartImage } from '../ui/SmartImage';
 
-const BANNER = 'aspect-square sm:aspect-[16/9] lg:aspect-[21/9]';
+const BANNER = 'aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]';
 const BANNER_SHADE = 'absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent sm:bg-gradient-to-r sm:from-black/60 sm:via-black/20';
-const BANNER_TEXT = 'absolute inset-x-0 bottom-0 p-5 text-canvas sm:inset-y-0 sm:flex sm:max-w-xl sm:flex-col sm:justify-center sm:p-10 lg:p-14';
-const BANNER_TITLE = 'text-[1.75rem] leading-[1.08] sm:text-[2.5rem] lg:text-[3rem]';
+const BANNER_TEXT = 'absolute inset-x-0 bottom-0 p-4 text-canvas sm:inset-y-0 sm:flex sm:max-w-xl sm:flex-col sm:justify-center sm:p-10 lg:p-14';
+const BANNER_TITLE = 'text-[1.5rem] leading-[1.1] sm:text-[2.5rem] lg:text-[3rem]';
 
 const prefersReducedMotion = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -31,11 +31,11 @@ function StaticHero() {
         <div className={BANNER_SHADE} />
         <div className={BANNER_TEXT}>
           <h1 id="hero-title" className={cn(BANNER_TITLE, 'text-canvas')}>{hero.title}</h1>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link to={hero.primaryCta.to} className="btn bg-canvas text-ink hover:bg-brand-soft">
-              {hero.primaryCta.label} <Icon name="arrowRight" size={16} />
+          <div className="mt-3 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2">
+            <Link to={hero.primaryCta.to} className="btn max-sm:btn-sm max-sm:px-3 max-sm:text-xs bg-canvas text-ink hover:bg-brand-soft">
+              {hero.primaryCta.label} <Icon name="arrowRight" size={16} className="max-sm:hidden" />
             </Link>
-            <Link to={hero.secondaryCta.to} className="btn border-canvas/60 text-canvas hover:border-canvas">
+            <Link to={hero.secondaryCta.to} className="btn max-sm:btn-sm max-sm:px-3 max-sm:text-xs border-canvas/60 bg-black/25 text-canvas backdrop-blur-sm hover:border-canvas">
               {hero.secondaryCta.label}
             </Link>
           </div>
@@ -91,7 +91,7 @@ function FestivalCarousel() {
                 ) : (
                   <h2 className={cn(BANNER_TITLE, 'mt-3 text-canvas')}>{s.title}</h2>
                 )}
-                <Link to={s.cta.to} tabIndex={active ? 0 : -1} className="btn mt-4 w-fit bg-canvas text-ink hover:bg-brand-soft">
+                <Link to={s.cta.to} tabIndex={active ? 0 : -1} className="btn max-sm:btn-sm mt-3 w-fit sm:mt-4 bg-canvas text-ink hover:bg-brand-soft">
                   {s.cta.label} <Icon name="arrowRight" size={16} />
                 </Link>
               </div>
@@ -101,7 +101,7 @@ function FestivalCarousel() {
 
         {slides.length > 1 && (
           <div className="absolute top-2 right-2 flex items-center gap-1 sm:top-auto sm:right-6 sm:bottom-6 sm:gap-2">
-            <button type="button" onClick={() => go(index - 1)} className="grid size-11 place-items-center rounded-full bg-canvas/15 text-canvas backdrop-blur hover:bg-canvas/30" aria-label="Previous slide">
+            <button type="button" onClick={() => go(index - 1)} className="grid size-9 place-items-center sm:size-11 rounded-full bg-canvas/15 text-canvas backdrop-blur hover:bg-canvas/30" aria-label="Previous slide">
               <Icon name="chevronLeft" />
             </button>
             <div className="flex gap-1.5">
@@ -118,7 +118,7 @@ function FestivalCarousel() {
                 </button>
               ))}
             </div>
-            <button type="button" onClick={() => go(index + 1)} className="grid size-11 place-items-center rounded-full bg-canvas/15 text-canvas backdrop-blur hover:bg-canvas/30" aria-label="Next slide">
+            <button type="button" onClick={() => go(index + 1)} className="grid size-9 place-items-center sm:size-11 rounded-full bg-canvas/15 text-canvas backdrop-blur hover:bg-canvas/30" aria-label="Next slide">
               <Icon name="chevronRight" />
             </button>
           </div>
