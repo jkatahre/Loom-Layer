@@ -224,6 +224,17 @@ All images are `.webp` files under `frontend/public/images/`.
 
 **Replacing an image:** save your photo with the same file name. No code changes are needed. Use square 1080 × 1080 photos everywhere except `banners/`, which are wide (about 21:9). The site shows every other image as a square, so other shapes get cropped.
 
+**Curtain photos:** every design has a numbered photo set. Its entry in `frontend/src/data/products.ts` has `photo: N`, and the site uses these four files:
+
+| File | Shows |
+| --- | --- |
+| `curtains/N-1.webp` | Curtain styled in a room: catalogue card and first gallery image |
+| `details/N-0.webp` | Front view: card hover and gallery |
+| `fabrics/N-2.webp` | Fabric close-up: gallery, fabric swatches and fabric tiles |
+| `details/N-3.webp` | Heading close-up: gallery |
+
+To add a design, save its four photos with the next free number and copy a catalogue entry in `products.ts` with that `photo` number.
+
 | Path | Used for |
 | --- | --- |
 | `curtains/<variant-sku>.webp` | Front view of the pair (card and gallery main image) |

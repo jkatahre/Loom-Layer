@@ -17,9 +17,8 @@ const PUBLIC = path.resolve(__dirname, '../../public');
 const exists = (url: string) => existsSync(path.join(PUBLIC, url));
 
 describe('catalogue integrity', () => {
-  it('has a realistic number of product × variant combinations', () => {
-    expect(fabricVariants.length).toBeGreaterThanOrEqual(100);
-    expect(fabricVariants.length).toBeLessThanOrEqual(160);
+  it('gives every design at least one colourway', () => {
+    for (const p of products) expect(fabricVariants.some((v) => v.product_id === p.id)).toBe(true);
   });
 
   it('uses unique ids, slugs and SKUs', () => {
@@ -53,9 +52,11 @@ describe('catalogue integrity', () => {
     }
   });
 
-  it('prices colourways and sizes differently where configured', () => {
-    const prices = new Set(variantSizePrices.map((v) => v.sale_price));
-    expect(prices.size).toBeGreaterThan(50);
+  it('prices each size of a colourway differently', () => {
+    for (const v of fabricVariants) {
+      const prices = variantSizePrices.filter((p) => p.variant_id === v.id && p.sale_price != null).map((p) => p.sale_price);
+      expect(new Set(prices).size, v.id).toBe(prices.length);
+    }
   });
 
   it('only lists blackout performance that is explicitly declared', () => {
@@ -101,15 +102,15 @@ describe('catalogue filters & URL state', () => {
     expect(parseCatalogParams(new URLSearchParams('sort=bogus')).sort).toBe('featured');
   });
   it('filters by category, price band and search', () => {
-    const blackout = applyCatalog(all, parseCatalogParams(new URLSearchParams('category=blackout-curtains')), sizeIdsByProduct);
-    expect(blackout.length).toBeGreaterThan(0);
-    expect(blackout.every((p) => p.category_ids.includes('blackout-curtains'))).toBe(true);
+    const sheer = applyCatalog(all, parseCatalogParams(new URLSearchParams('category=sheer-curtains')), sizeIdsByProduct);
+    expect(sheer.length).toBeGreaterThan(0);
+    expect(sheer.every((p) => p.category_ids.includes('sheer-curtains'))).toBe(true);
 
     const cheap = applyCatalog(all, parseCatalogParams(new URLSearchParams('price=under-2500')), sizeIdsByProduct);
     expect(cheap.every((p) => p.priceFrom! < 250000)).toBe(true);
 
-    const bySku = applyCatalog(all, parseCatalogParams(new URLSearchParams('q=LL-VEL-005')), sizeIdsByProduct);
-    expect(bySku.map((p) => p.id)).toEqual(['p-005']);
+    const bySku = applyCatalog(all, parseCatalogParams(new URLSearchParams('q=LL-VEL-039')), sizeIdsByProduct);
+    expect(bySku.map((p) => p.id)).toEqual(['p-039']);
   });
   it('sorts by price ascending', () => {
     const sorted = applyCatalog(all, parseCatalogParams(new URLSearchParams('sort=price-asc')), sizeIdsByProduct).filter((p) => p.priceFrom != null);
@@ -120,7 +121,7 @@ describe('catalogue filters & URL state', () => {
 describe('service quote & enquiry', () => {
   it('estimates a real catalogue product', () => {
     const r = calculateCustomQuoteSync({
-      productId: 'p-005', variantId: 'p-005-olv', finishedWidth: 2400, finishedDrop: 2600, displayUnit: 'in',
+      productId: 'p-039', variantId: 'p-039-eme', finishedWidth: 2400, finishedDrop: 2600, displayUnit: 'in',
       pairs: 2, fullnessRatio: 2.5, heading: 'pinch_pleat', lining: 'blackout_lining', installation: true, measurementService: false,
       couponCode: 'DIWALI2000',
     }, new Date('2026-10-26T12:00:00+05:30'));
@@ -129,7 +130,7 @@ describe('service quote & enquiry', () => {
   });
   it('needs confirmation for a colourway without fabric specs', () => {
     const r = calculateCustomQuoteSync({
-      productId: 'p-033', variantId: 'p-033-ind', finishedWidth: 2000, finishedDrop: 2400, displayUnit: 'cm',
+      productId: 'p-042', variantId: 'p-042-cha', finishedWidth: 2000, finishedDrop: 2400, displayUnit: 'cm',
       pairs: 1, fullnessRatio: 2, heading: 'pinch_pleat', lining: 'unlined', installation: false, measurementService: false,
     });
     expect(r.kind).toBe('needs_confirmation');

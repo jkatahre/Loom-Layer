@@ -1,5 +1,7 @@
+import type React from 'react';
 import { Link } from 'react-router';
 import { store } from '../../config/store';
+import { products } from '../../data/products';
 import { useAsync } from '../../hooks/useAsync';
 import { getCategories, getRooms } from '../../services/productService';
 import type { ProductSummary } from '../../types/product';
@@ -94,11 +96,19 @@ export function RoomGrid() {
   );
 }
 
+/** Fabric families with at least one design, so no tile leads to an empty page. */
+const families = store.fabricFamilies.filter((f) =>
+  products.some((p) => (!f.materials.length || f.materials.includes(p.fabric_material)) && (!f.textures.length || f.textures.includes(p.texture))),
+);
+
 /** One square tile per fabric family, shared by the homepage and the fabrics page. */
 export function FabricFamilyGrid() {
   return (
-    <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:gap-4 xl:grid-cols-6">
-      {store.fabricFamilies.map((f) => {
+    <div
+      className="grid grid-cols-2 gap-2 sm:gap-3 md:[grid-template-columns:repeat(var(--cols),minmax(0,1fr))] lg:gap-4"
+      style={{ '--cols': Math.min(families.length, 6) } as React.CSSProperties}
+    >
+      {families.map((f) => {
         const params = new URLSearchParams();
         if (f.materials.length) params.set('material', f.materials.join(','));
         if (f.textures.length) params.set('texture', f.textures.join(','));

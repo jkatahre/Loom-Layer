@@ -5,6 +5,7 @@ import { SmartImage } from '../components/ui/SmartImage';
 import { EmptyState, ErrorState } from '../components/ui/States';
 import { store } from '../config/store';
 import { useEnquiry } from '../contexts/EnquiryContext';
+import { swatchImage } from '../data/productImages';
 import { useAsync } from '../hooks/useAsync';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { getProducts } from '../services/productService';
@@ -94,7 +95,7 @@ export function FabricsPage() {
               {shown.map(({ v, p }) => (
                 <li key={v.id} className="group">
                   <Link to={`/products/${p.slug}`} className="block">
-                    <SmartImage src={`/images/fabrics/${v.variant_sku.toLowerCase()}.webp`} alt={`${v.name} ${MATERIAL_LABELS[v.material]} swatch`} ratio="1" className="rounded-xl" imgClassName="transition-transform duration-500 group-hover:scale-110" />
+                    <SmartImage src={swatchImage(v)} alt={`${v.name} ${MATERIAL_LABELS[v.material]} swatch`} ratio="1" className="rounded-xl" imgClassName="transition-transform duration-500 group-hover:scale-110" />
                     <p className="mt-2 truncate text-xs font-semibold">{v.name}</p>
                   </Link>
                   <button

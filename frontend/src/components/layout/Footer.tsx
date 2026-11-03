@@ -1,12 +1,12 @@
 import { Link } from 'react-router';
 import { store } from '../../config/store';
-import { categories } from '../../data/categories';
+import { categories, isCategoryListed } from '../../data/categories';
 import { quickWhatsAppUrl } from '../../services/enquiryService';
 import { HoursTable, OpenStatus } from '../ui/OpenStatus';
 import { Icon } from '../ui/Icon';
 import { Logo } from './Logo';
 
-const FOOTER_CATEGORIES = ['sheer-curtains', 'blackout-curtains', 'linen-curtains', 'velvet-curtains', 'thermal-curtains', 'kids-curtains', 'custom-made-curtains'];
+const FOOTER_CATEGORIES = ['sheer-curtains', 'linen-curtains', 'printed-curtains', 'floral-curtains', 'velvet-curtains', 'textured-curtains', 'custom-made-curtains'];
 
 export function Footer() {
   const { showroom, contact, identity } = store;
@@ -31,7 +31,7 @@ export function Footer() {
           <h2 className="eyebrow text-festive-gold">Shop</h2>
           <ul className="mt-4 space-y-1 text-sm">
             {categories
-              .filter((c) => FOOTER_CATEGORIES.includes(c.slug))
+              .filter((c) => FOOTER_CATEGORIES.includes(c.slug) && isCategoryListed(c.slug))
               .map((c) => (
                 <li key={c.id}>
                   <Link to={`/catalog?category=${c.slug}`} className="inline-flex min-h-9 items-center hover:text-canvas">

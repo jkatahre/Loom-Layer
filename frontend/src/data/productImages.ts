@@ -1,50 +1,49 @@
 import type { HeadingStyle, ProductImage } from '../types/product';
 import { fabricVariants } from './fabricVariants';
-import { productById } from './products';
+import { productById, seedById } from './products';
 
 /**
- * Image records. File names follow the variant SKU so a showroom can replace
- * the generated placeholders with real photography without touching code:
+ * Each design has a numbered photo set (`photo` on its catalogue entry):
  *
- *   /images/curtains/<variant-sku>.webp        front view of the pair
- *   /images/curtains/<variant-sku>-room.webp   the pair styled in a room
- *   /images/fabrics/<variant-sku>.webp         fabric close-up / swatch
- *   /images/details/heading-<heading>.webp     construction detail (shared)
- *   /images/details/lining.webp                lining / reverse (shared)
+ *   /images/curtains/<N>-1.webp   styled in a room   (catalogue card, first gallery image)
+ *   /images/details/<N>-0.webp    front view          (card hover, gallery)
+ *   /images/fabrics/<N>-2.webp    fabric close-up     (gallery, fabric swatch)
+ *   /images/details/<N>-3.webp    heading close-up    (gallery)
+ *
+ * To change a photo, save the new one over the file with the same name.
  */
-export const headingImage = (h: HeadingStyle) => `/images/details/heading-${h.replace('_', '-')}.webp`;
+export const productPhotos = (n: number) => ({
+  room: `/images/curtains/${n}-1.webp`,
+  front: `/images/details/${n}-0.webp`,
+  fabric: `/images/fabrics/${n}-2.webp`,
+  heading: `/images/details/${n}-3.webp`,
+});
 
-const HEADING_ALT: Record<HeadingStyle, string> = {
-  eyelet: 'Close-up of an eyelet heading with brushed metal rings',
-  pinch_pleat: 'Close-up of hand-stitched triple pinch pleats',
-  rod_pocket: 'Close-up of a rod-pocket heading gathered on a rod',
-  pencil_pleat: 'Close-up of tightly gathered pencil-pleat heading',
+const photosOf = (productId: string) => productPhotos(seedById.get(productId)?.photo ?? 0);
+
+/** Fabric close-up for a colourway's swatch. */
+export const swatchImage = (variant: { product_id: string }) => photosOf(variant.product_id).fabric;
+
+/** Heading close-ups from the showroom's photos; styles without one show no picture. */
+const HEADING_PHOTO: Partial<Record<HeadingStyle, string>> = {
+  eyelet: productPhotos(2).heading,
+  pinch_pleat: productPhotos(41).heading,
 };
+export const headingImage = (h: HeadingStyle): string | null => HEADING_PHOTO[h] ?? null;
 
-export const productImages: ProductImage[] = [
-  ...fabricVariants.flatMap((v): ProductImage[] => {
-    const product = productById.get(v.product_id);
-    const name = product?.name ?? 'Curtains';
-    const sku = v.variant_sku.toLowerCase();
-    return [
-      { id: `${v.id}-main`, product_id: v.product_id, variant_id: v.id, type: 'main', url: `/images/curtains/${sku}.webp`, alt: `${name} in ${v.name}, front view of the pair on a rod`, sort_order: 1, position: '50% 40%' },
-      { id: `${v.id}-room`, product_id: v.product_id, variant_id: v.id, type: 'lifestyle', url: `/images/curtains/${sku}-room.webp`, alt: `${name} in ${v.name} styled in a room`, sort_order: 2, position: '50% 50%' },
-      { id: `${v.id}-swatch`, product_id: v.product_id, variant_id: v.id, type: 'fabric_swatch', url: `/images/fabrics/${sku}.webp`, alt: `Fabric close-up of ${v.name} showing the ${v.texture.replace('_', ' ')} texture`, sort_order: 3 },
-    ];
-  }),
-  ...[...productById.values()].flatMap((p): ProductImage[] => {
-    const heading = p.heading_options[0] ?? 'eyelet';
-    const imgs: ProductImage[] = [
-      { id: `${p.id}-detail`, product_id: p.id, variant_id: null, type: 'detail', url: headingImage(heading), alt: HEADING_ALT[heading], sort_order: 4 },
-    ];
-    if (p.lining_options.some((l) => l !== 'unlined')) {
-      imgs.push({ id: `${p.id}-back`, product_id: p.id, variant_id: null, type: 'back', url: '/images/details/lining.webp', alt: 'Reverse of a lined curtain showing mitred corners and lining', sort_order: 5 });
-    }
-    return imgs;
-  }),
-];
+export const productImages: ProductImage[] = fabricVariants.flatMap((v): ProductImage[] => {
+  const name = productById.get(v.product_id)?.name ?? 'Curtains';
+  const photos = photosOf(v.product_id);
+  const base = { product_id: v.product_id, variant_id: v.id };
+  return [
+    { ...base, id: `${v.id}-main`, type: 'main', url: photos.room, alt: `${name} in ${v.name}, styled in a living room`, sort_order: 1 },
+    { ...base, id: `${v.id}-room`, type: 'lifestyle', url: photos.front, alt: `${name} in ${v.name}, front view of the pair on a rod`, sort_order: 2 },
+    { ...base, id: `${v.id}-swatch`, type: 'fabric_swatch', url: photos.fabric, alt: `Fabric close-up of ${v.name}`, sort_order: 3 },
+    { ...base, id: `${v.id}-detail`, type: 'detail', url: photos.heading, alt: `Heading close-up of ${name}`, sort_order: 4 },
+  ];
+});
 
-/** Gallery for a product + selected variant: variant images first, then shared details. */
+/** Gallery for a product + selected variant. */
 export function galleryFor(productId: string, variantId: string | null): ProductImage[] {
   return productImages
     .filter((img) => img.product_id === productId && (img.variant_id === null || img.variant_id === variantId))

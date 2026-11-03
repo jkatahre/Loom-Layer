@@ -16,6 +16,7 @@ import { SmartImage } from '../ui/SmartImage';
 import { DimensionsDiagram, MeasurementGuide } from './DimensionsDiagram';
 import { MeasurementField, UnitToggle } from './MeasurementField';
 import { ESTIMATE_LABEL, QuoteBreakdown } from './QuoteBreakdown';
+import { swatchImage } from '../../data/productImages';
 
 const STEPS = ['Fabric', 'Measurements', 'Configure', 'Estimate', 'Enquire'] as const;
 
@@ -192,7 +193,7 @@ export function CustomConfigurator({ productId: lockedProductId, variantId: cont
                     )}
                   >
                     <input type="radio" name={`${uid}-variant`} className="sr-only" checked={v.id === variant?.id} onChange={() => setVariant(v.id)} />
-                    <SmartImage src={`/images/fabrics/${v.variant_sku.toLowerCase()}.webp`} alt="" ratio="1" className="w-11 shrink-0 rounded-lg" />
+                    <SmartImage src={swatchImage(v)} alt="" ratio="1" className="w-11 shrink-0 rounded-lg" />
                     <span className="min-w-0 text-xs">
                       <span className="block truncate text-sm font-medium text-ink">{v.name}</span>
                       <span className="text-muted">{STOCK_LABELS[v.stock_status]}</span>
@@ -360,7 +361,7 @@ export function CustomConfigurator({ productId: lockedProductId, variantId: cont
     <aside aria-label="Your configuration" className="rounded-2xl border border-line p-5">
       <h3 className="font-sans text-sm font-semibold tracking-wide text-muted uppercase">Your curtains</h3>
       <div className="mt-3 flex items-center gap-3">
-        {variant && <SmartImage src={`/images/fabrics/${variant.variant_sku.toLowerCase()}.webp`} alt="" ratio="1" className="w-14 shrink-0 rounded-lg" />}
+        {variant && <SmartImage src={swatchImage(variant)} alt="" ratio="1" className="w-14 shrink-0 rounded-lg" />}
         <div className="min-w-0 text-sm">
           <p className="truncate font-semibold">{product.name}</p>
           <p className="text-muted">{variant?.name}</p>

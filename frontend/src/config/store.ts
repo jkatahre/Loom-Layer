@@ -41,13 +41,13 @@ export const store: StoreConfig = {
   navigation: {
     headerCategories: [
       { label: 'Sheer', to: '/catalog?category=sheer-curtains' },
-      { label: 'Blackout', to: '/catalog?category=blackout-curtains' },
+      { label: 'Printed', to: '/catalog?category=printed-curtains' },
       { label: 'Linen', to: '/catalog?category=linen-curtains' },
       { label: 'Velvet', to: '/catalog?category=velvet-curtains' },
       { label: 'Fabrics', to: '/fabrics' },
       { label: 'Custom-Made', to: '/custom-curtains' },
     ],
-    popularSearches: ['blackout', 'linen sheer', 'velvet', 'eyelet', 'floral', 'thermal', 'kids'],
+    popularSearches: ['linen sheer', 'velvet', 'boucle', 'floral', 'check', 'blue', 'green'],
     searchPlaceholder: 'Search fabric, colour, style or SKU…',
   },
 
@@ -310,10 +310,10 @@ export const store: StoreConfig = {
         position: '50% 50%',
         alt: 'Calm bedroom with floor-length blackout curtains drawn closed',
         chip: 'Use code DIWALI2000',
-        title: 'Restful blackout for every bedroom',
-        subtitle: 'Blackout and thermal curtains, ready-made or made to measure.',
-        categorySlug: 'blackout-curtains',
-        cta: { label: 'Shop blackout', to: '/catalog?category=blackout-curtains' },
+        title: 'Prints that bring a room to life',
+        subtitle: 'Florals, paisleys and checks printed on light linen sheers.',
+        categorySlug: 'printed-curtains',
+        cta: { label: 'Shop prints', to: '/catalog?category=printed-curtains' },
       },
     ],
   },
@@ -454,7 +454,7 @@ export const store: StoreConfig = {
       feel: 'Dry, crisp hand with visible slub',
       bestFor: 'Living rooms, sheers, relaxed eyelets',
       swatchHex: '#D8C3A5',
-      image: { src: '/images/fabrics/family-linen.webp', alt: 'Close-up of sand linen weave' },
+      image: { src: '/images/fabrics/15-2.webp', alt: 'Close-up of natural flax slub linen' },
     },
     {
       id: 'cotton',
@@ -465,7 +465,7 @@ export const store: StoreConfig = {
       feel: 'Soft, matte and breathable',
       bestFor: 'Bedrooms, kitchens, kids rooms',
       swatchHex: '#E9DCC6',
-      image: { src: '/images/fabrics/family-cotton.webp', alt: 'Close-up of printed cotton fabric' },
+      image: { src: '/images/fabrics/20-2.webp', alt: 'Close-up of ivory woven fabric' },
     },
     {
       id: 'velvet',
@@ -476,7 +476,7 @@ export const store: StoreConfig = {
       feel: 'Plush, weighty, light-catching',
       bestFor: 'Living and dining rooms, formal spaces',
       swatchHex: '#5E6B45',
-      image: { src: '/images/fabrics/family-velvet.webp', alt: 'Close-up of olive velvet pile' },
+      image: { src: '/images/fabrics/39-2.webp', alt: 'Close-up of emerald crushed velvet' },
     },
     {
       id: 'sheer',
@@ -487,7 +487,7 @@ export const store: StoreConfig = {
       feel: 'Light, airy, translucent',
       bestFor: 'Layering behind heavier drapes',
       swatchHex: '#F7F5F0',
-      image: { src: '/images/fabrics/family-sheer.webp', alt: 'Close-up of white voile sheer' },
+      image: { src: '/images/fabrics/2-2.webp', alt: 'Close-up of sage linen sheer' },
     },
     {
       id: 'jacquard',
@@ -498,7 +498,7 @@ export const store: StoreConfig = {
       feel: 'Structured with raised pattern',
       bestFor: 'Statement windows, dining rooms',
       swatchHex: '#B8A27C',
-      image: { src: '/images/fabrics/family-jacquard.webp', alt: 'Close-up of gold jacquard weave' },
+      image: { src: '/images/fabrics/3-2.webp', alt: 'Close-up of moss herringbone weave' },
     },
     {
       id: 'polyester',
@@ -509,7 +509,7 @@ export const store: StoreConfig = {
       feel: 'Smooth, dense, easy-care',
       bestFor: 'Bedrooms, hospitality, sun-facing windows',
       swatchHex: '#3A3734',
-      image: { src: '/images/fabrics/family-polyester.webp', alt: 'Close-up of charcoal blackout fabric' },
+      image: { src: '/images/fabrics/42-2.webp', alt: 'Close-up of charcoal boucle weave' },
     },
   ],
 };

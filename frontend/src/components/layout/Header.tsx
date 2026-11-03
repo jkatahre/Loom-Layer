@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router';
 import { store } from '../../config/store';
 import { useEnquiry } from '../../contexts/EnquiryContext';
-import { categories } from '../../data/categories';
+import { categories, isCategoryListed } from '../../data/categories';
 import { cn } from '../../utils/cn';
 import { Dialog } from '../ui/Dialog';
 import { Icon } from '../ui/Icon';
@@ -16,15 +16,15 @@ const catName = new Map(categories.map((c) => [c.slug, c.name.replace(/ Curtains
 const MENU_GROUPS: { title: string; links: { label: string; to: string }[] }[] = [
   {
     title: 'Light control',
-    links: ['sheer-curtains', 'room-darkening-curtains', 'blackout-curtains', 'thermal-curtains'].map((s) => ({ label: catName.get(s) ?? s, to: `/catalog?category=${s}` })),
+    links: ['sheer-curtains', 'room-darkening-curtains', 'blackout-curtains', 'thermal-curtains'].filter(isCategoryListed).map((s) => ({ label: catName.get(s) ?? s, to: `/catalog?category=${s}` })),
   },
   {
     title: 'Fabric',
-    links: ['linen-curtains', 'cotton-curtains', 'velvet-curtains', 'polyester-curtains', 'textured-curtains'].map((s) => ({ label: catName.get(s) ?? s, to: `/catalog?category=${s}` })),
+    links: ['linen-curtains', 'cotton-curtains', 'velvet-curtains', 'polyester-curtains', 'textured-curtains'].filter(isCategoryListed).map((s) => ({ label: catName.get(s) ?? s, to: `/catalog?category=${s}` })),
   },
   {
     title: 'Heading & pattern',
-    links: ['eyelet-curtains', 'pinch-pleat-curtains', 'pencil-pleat-curtains', 'floral-curtains', 'geometric-curtains'].map((s) => ({ label: catName.get(s) ?? s, to: `/catalog?category=${s}` })),
+    links: ['eyelet-curtains', 'pinch-pleat-curtains', 'pencil-pleat-curtains', 'floral-curtains', 'geometric-curtains', 'printed-curtains'].filter(isCategoryListed).map((s) => ({ label: catName.get(s) ?? s, to: `/catalog?category=${s}` })),
   },
   {
     title: 'Room',

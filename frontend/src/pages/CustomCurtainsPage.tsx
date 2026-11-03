@@ -14,6 +14,7 @@ export function CustomCurtainsPage() {
   usePageMeta('Custom-made curtains', 'Made-to-measure curtains with an itemised online estimate. Learn how to measure, choose fullness, heading and lining.');
   const { openEnquiry } = useEnquiry();
   const rc = store.pricing.rateCard;
+  const headings = Object.entries(rc.headings) as [HeadingStyle, (typeof rc.headings)[HeadingStyle]][];
 
   return (
     <>
@@ -63,14 +64,23 @@ export function CustomCurtainsPage() {
         <div className="container-page">
           <SectionHeading title="Headings" />
           <div className="grid grid-cols-2 gap-x-2 gap-y-3 sm:gap-x-3 lg:grid-cols-4">
-            {(Object.entries(rc.headings) as [HeadingStyle, (typeof rc.headings)[HeadingStyle]][]).map(([id, h]) => (
+            {headings.filter(([id]) => headingImage(id)).map(([id, h]) => (
               <article key={id}>
-                <SmartImage src={headingImage(id)} alt={`${h.label} heading close-up`} ratio="1" className="rounded-xl" />
-                <h3 className="mt-2 font-sans text-sm font-semibold">{h.label}</h3>
+                <SmartImage src={headingImage(id)} alt={`${h.label} heading close-up`} ratio="1" className="mb-2 rounded-xl" />
+                <h3 className="font-sans text-sm font-semibold">{h.label}</h3>
                 <p className="text-xs text-muted">{h.recommendedFullness}× fullness · {formatINR(h.chargePerWidth)} per width</p>
               </article>
             ))}
           </div>
+          {headings.some(([id]) => !headingImage(id)) && (
+            <p className="mt-3 text-sm text-muted">
+              Also made to order:{' '}
+              {headings
+                .filter(([id]) => !headingImage(id))
+                .map(([, h]) => `${h.label} (${h.recommendedFullness}× fullness · ${formatINR(h.chargePerWidth)} per width)`)
+                .join(' · ')}
+            </p>
+          )}
         </div>
       </section>
 
